@@ -687,7 +687,35 @@ tr:hover td{background:#FAFAF8}
 
 <div class="toast" id="toast"></div>
 
-<script>
+<!-- Loading overlay -->
+<div id="loadingOverlay" style="position:fixed;inset:0;background:var(--hdt);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:0.08em;color:#fff">HÁPTICA</div>
+  <div style="font-size:13px;color:rgba(255,255,255,0.5);font-family:'Nunito',sans-serif;font-weight:600">Cargando pipeline comercial...</div>
+  <div style="width:48px;height:48px;border:3px solid rgba(255,255,255,0.15);border-top-color:var(--ho);border-radius:50%;animation:spin 0.8s linear infinite"></div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, setDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ========================
+// FIREBASE CONFIG
+// ========================
+const firebaseConfig = {
+  apiKey: "AIzaSyB2fI0CRhUqBMvgKGaiwvuWE4Q7ObTVocU",
+  authDomain: "haptica-pipeline.firebaseapp.com",
+  projectId: "haptica-pipeline",
+  storageBucket: "haptica-pipeline.firebasestorage.app",
+  messagingSenderId: "903613692015",
+  appId: "1:903613692015:web:693433488c5fd910d1359a"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const oppsCol = collection(db, 'oportunidades');
+
 // ========================
 // DATA & CONSTANTS
 // ========================
@@ -695,7 +723,8 @@ const META = 4680000000, META_M = 390000000;
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 let currentRole = 'bd', sortCol = null, sortDir = 1, editIdx = null;
 
-let data = [
+// Datos iniciales — solo se cargan si Firestore está vacío
+const SEED_DATA = [
   {id:1,name:'Davivienda_Bolsa de horas 2026',cliente:'Davivienda',author:'Nicholle Torres',tipo:'Recompra orgánica',status:'Vendido',valor:300800000,prob:0.8,mes:'Mayo',pais:'Colombia',linea:'Service Design',producto:'Bolsa de horas',npagos:3,pagos:[40,40,20],dur:6,dec:true,urg:true,pre:true,coment:'Vendido. En ejecución.',act:'2026-03-15'},
   {id:2,name:'Porvenir_Programa Champions',cliente:'Porvenir',author:'Maria Alejandra Corrales',tipo:'Recompra orgánica',status:'Vendido',valor:25500000,prob:0.8,mes:'Mayo',pais:'Colombia',linea:'Service Design',producto:'Consultoría',npagos:2,pagos:[50,50],dur:3,dec:true,urg:true,pre:true,coment:'Confirmado.',act:'2026-03-10'},
   {id:3,name:'ASTRA_Ayudas visuales',cliente:'ASTRA',author:'Daniel Pinilla',tipo:'Nueva venta proactiva',status:'Vendido',valor:34500000,prob:0.8,mes:'Abril',pais:'Colombia',linea:'Legal service design',producto:'Consultoría',npagos:2,pagos:[60,40],dur:2,dec:true,urg:true,pre:true,coment:'Cerrado.',act:'2026-04-01'},
@@ -728,7 +757,88 @@ let data = [
   {id:30,name:'Banco Plata_Cuota manejo',cliente:'Banco Plata',author:'Nicholle Torres',tipo:'Nueva venta proactiva',status:'Buscando cerrar venta',valor:46000000,prob:0.2,mes:'Marzo',pais:'Colombia',linea:'Legal service design',producto:'Consultoría',npagos:3,pagos:[30,40,30],dur:3,dec:false,urg:false,pre:false,coment:'',act:'2026-01-10'},
 ];
 
+// data vive en memoria y se sincroniza desde Firestore
+let data = [];
+let proyeccionIds = new Set();
 let hosts = ['Daniel Pinilla','Mariale (Maria Alejandra Corrales)','Mariaca (Ma Camila Venegas)','Camilo'];
+
+// ========================
+// FIREBASE — SINCRONIZACIÓN EN TIEMPO REAL
+// ========================
+async function initFirebase(){
+  // Escuchar cambios en tiempo real
+  onSnapshot(oppsCol, (snapshot) => {
+    data = snapshot.docs.map(d => ({ _docId: d.id, ...d.data() }));
+    // Mantener vendidas en proyección automáticamente
+    data.filter(d=>d.status==='Vendido').forEach(d=>proyeccionIds.add(d.id||d._docId));
+    // Re-renderizar la vista activa
+    const activePage = document.querySelector('.page.active');
+    if(activePage){
+      const id = activePage.id.replace('page-','');
+      const renders = {dashboard:renderDashboard,pipeline:renderPipeline,kanban:renderKanban,
+        mipipeline:renderMiPipeline,semanal:renderSemanal,riesgos:renderRiesgos,
+        metas:renderMetas,facturacion:renderFacturacion};
+      if(renders[id]) renders[id]();
+    }
+    updateRiskBadge();
+    // Ocultar loading
+    const overlay = document.getElementById('loadingOverlay');
+    if(overlay) overlay.style.display='none';
+  });
+
+  // Si Firestore está vacío, cargar datos iniciales
+  const snapshot = await getDocs(oppsCol);
+  if(snapshot.empty){
+    toast('Cargando datos iniciales en Firestore…');
+    for(const opp of SEED_DATA){
+      await setDoc(doc(db, 'oportunidades', String(opp.id)), opp);
+    }
+    toast('✓ Pipeline inicial cargado en Firestore');
+  }
+}
+
+// ========================
+// FIREBASE — GUARDAR OPORTUNIDAD
+// ========================
+async function saveOppToFirestore(opp){
+  try {
+    if(editIdx !== null && data[editIdx]?._docId){
+      // Editar existente
+      const docId = data[editIdx]._docId;
+      const { _docId, ...oppData } = opp;
+      await updateDoc(doc(db, 'oportunidades', docId), oppData);
+      toast('Oportunidad actualizada ✓');
+    } else {
+      // Nueva — usar id numérico como docId
+      const newId = Date.now();
+      opp.id = newId;
+      await setDoc(doc(db, 'oportunidades', String(newId)), opp);
+      toast('Nueva cuenta creada ✓');
+    }
+    closeModal();
+  } catch(e){
+    toast('Error al guardar: ' + e.message);
+  }
+}
+
+// ========================
+// FIREBASE — ELIMINAR OPORTUNIDAD
+// ========================
+async function eliminarDeFirestore(){
+  if(currentRole!=='bd'||editIdx===null) return;
+  const docId = data[editIdx]?._docId;
+  const nombre = data[editIdx]?.name;
+  if(!docId) return;
+  try {
+    await deleteDoc(doc(db, 'oportunidades', docId));
+    editIdx = null;
+    document.getElementById('confirmDel').classList.remove('open');
+    closeModal();
+    toast(`"${(nombre||'').slice(0,32)}" eliminada`);
+  } catch(e){
+    toast('Error al eliminar: ' + e.message);
+  }
+}
 
 // ========================
 // HELPERS
@@ -1264,7 +1374,6 @@ function handleImport(inp){
   document.getElementById('importWarn').innerHTML=`<div style="background:#FFF8F0;border:1.5px solid var(--hc);border-radius:14px;padding:16px"><div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--ho);margin-bottom:8px">3 advertencias detectadas</div><div style="font-size:12px;font-weight:600;color:var(--hdg);line-height:1.8">• Fila 1: NUAM_seguimiento – Sin valor, sin responsable<br>• Fila 11: ISAPRE – Sin país, sin mes de cierre<br>• Fila 26: Alinea_administrativos – Sin valor ni fecha</div></div>`;
 }
 function confirmarImport(){ toast('✓ 68 oportunidades importadas correctamente'); document.getElementById('importStatus').style.display='none'; }
-document.getElementById('mapTbody').innerHTML = COLMAP.map(([e,n,t])=>`<tr><td style="font-weight:700;color:var(--hdt)">${e}</td><td><span class="badge b-form">${n}</span></td><td style="font-size:11px;color:var(--hmg);font-weight:600">${t}</td></tr>`).join('');
 
 // ========================
 // CONFIG
@@ -1352,24 +1461,23 @@ function saveOpp(){
   const cnt = [dec,urg,pre].filter(Boolean).length;
   const prob= cnt===3?0.8:cnt===2?0.6:cnt===1?0.4:0.2;
   const opp = {
-    id: editIdx!=null?data[editIdx].id:Date.now(),
-    name, cliente:document.getElementById('f_cliente')?.value,
-    author:document.getElementById('f_resp')?.value,
-    status:document.getElementById('f_estado')?.value,
-    tipo:document.getElementById('f_tipo')?.value,
-    linea:document.getElementById('f_linea')?.value,
+    id: editIdx!=null?(data[editIdx].id||data[editIdx]._docId):Date.now(),
+    name, cliente:document.getElementById('f_cliente')?.value||'',
+    author:document.getElementById('f_resp')?.value||'',
+    status:document.getElementById('f_estado')?.value||'',
+    tipo:document.getElementById('f_tipo')?.value||'',
+    linea:document.getElementById('f_linea')?.value||'',
     valor:parseFloat(document.getElementById('f_valor')?.value)||null,
-    mes:document.getElementById('f_mes')?.value,
-    pais:document.getElementById('f_pais')?.value,
-    producto:document.getElementById('f_producto')?.value,
+    mes:document.getElementById('f_mes')?.value||'',
+    pais:document.getElementById('f_pais')?.value||'',
+    producto:document.getElementById('f_producto')?.value||'',
     dec, urg, pre, prob, npagos:n, pagos,
     dur:parseInt(document.getElementById('f_dur')?.value)||3,
-    coment:document.getElementById('f_coment')?.value,
+    coment:document.getElementById('f_coment')?.value||'',
     act:new Date().toISOString().split('T')[0]
   };
-  if(editIdx!=null) data[editIdx]=opp; else data.push(opp);
-  closeModal(); renderPipeline(); updateRiskBadge();
-  toast(editIdx!=null?'Oportunidad actualizada ✓':'Nueva cuenta creada ✓');
+  // Guardar en Firestore (onSnapshot actualizará data[] automáticamente)
+  saveOppToFirestore(opp);
 }
 
 // ========================
@@ -1382,15 +1490,7 @@ function solicitarEliminar(){
 }
 
 function confirmarEliminar(){
-  if(currentRole!=='bd'||editIdx===null) return;
-  const nombre = data[editIdx].name;
-  data.splice(editIdx,1);
-  editIdx = null;
-  document.getElementById('confirmDel').classList.remove('open');
-  closeModal();
-  renderPipeline();
-  updateRiskBadge();
-  toast(`"${nombre.slice(0,32)}" eliminada`);
+  eliminarDeFirestore();
 }
 
 function cancelarEliminar(){
@@ -1400,15 +1500,18 @@ function cancelarEliminar(){
 // ========================
 // UTILS
 // ========================
-function updateRiskBadge(){ const n=data.filter(isRisk).length; document.getElementById('sbRiskCount').textContent=n; }
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function updateRiskBadge(){ const n=data.filter(isRisk).length; const el=document.getElementById('sbRiskCount'); if(el) el.textContent=n; }
+function toast(msg){ const t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 
 // ========================
 // INIT
 // ========================
-renderDashboard();
-renderPipeline();
-setTimeout(()=>renderMetas(), 50);
+// Inicializar mapa de columnas importación
+document.getElementById('mapTbody').innerHTML = COLMAP.map(([e,n,t])=>`<tr><td style="font-weight:700;color:var(--hdt)">${e}</td><td><span class="badge b-form">${n}</span></td><td style="font-size:11px;color:var(--hmg);font-weight:600">${t}</td></tr>`).join('');
+
+// Arrancar Firebase — carga datos y escucha cambios en tiempo real
+initFirebase();
+
 </script>
 </body>
 </html>
