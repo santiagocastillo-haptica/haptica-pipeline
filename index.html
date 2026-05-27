@@ -1679,6 +1679,42 @@ function toast(msg){ const t=document.getElementById('toast'); if(!t) return; t.
 // Inicializar mapa de columnas importación
 document.getElementById('mapTbody').innerHTML = COLMAP.map(([e,n,t])=>`<tr><td style="font-weight:700;color:var(--hdt)">${e}</td><td><span class="badge b-form">${n}</span></td><td style="font-size:11px;color:var(--hmg);font-weight:600">${t}</td></tr>`).join('');
 
+// ========================
+// EXPONER FUNCIONES AL HTML
+// Las funciones dentro de type="module" no son accesibles
+// desde onclick en el HTML — hay que asignarlas a window
+// ========================
+window.showPage          = showPage;
+window.showTab           = showTab;
+window.changeRole        = changeRole;
+window.openNewOpp        = openNewOpp;
+window.openEditOpp       = openEditOpp;
+window.closeModal        = closeModal;
+window.calcProb          = calcProb;
+window.renderPagosForm   = renderPagosForm;
+window.saveOpp           = saveOpp;
+window.solicitarEliminar = solicitarEliminar;
+window.confirmarEliminar = confirmarEliminar;
+window.cancelarEliminar  = cancelarEliminar;
+window.sortBy            = sortBy;
+window.renderPipeline    = renderPipeline;
+window.renderKanban      = renderKanban;
+window.renderMiPipeline  = renderMiPipeline;
+window.renderSemanal     = renderSemanal;
+window.renderFacturacion = renderFacturacion;
+window.toggleWk          = toggleWk;
+window.guardarWk         = guardarWk;
+window.toggleProyeccion  = toggleProyeccion;
+window.agregarTodas      = agregarTodas;
+window.limpiarProyeccion = limpiarProyeccion;
+window.previsualizarReporte = previsualizarReporte;
+window.generarReporte    = generarReporte;
+window.handleImport      = handleImport;
+window.confirmarImport   = confirmarImport;
+window.addHost           = addHost;
+window.removeHost        = removeHost;
+window.cerrarSesion      = cerrarSesion;
+
 // Arrancar Firebase — carga datos y escucha cambios en tiempo real
 initFirebase();
 
