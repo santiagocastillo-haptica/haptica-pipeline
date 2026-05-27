@@ -280,6 +280,28 @@ tr:hover td{background:#FAFAF8}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--hdt);color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:700;z-index:400;opacity:0;transform:translateY(8px);transition:all 0.25s;pointer-events:none;font-family:'Nunito',sans-serif;box-shadow:0 8px 24px rgba(0,63,63,0.25)}
 .toast.show{opacity:1;transform:translateY(0)}
 
+/* === REUNIONES === */
+.reunion-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.reunion-fecha{width:148px;padding:8px 10px;border:1.5px solid var(--hg);border-radius:10px;font-size:12px;font-family:'Nunito',sans-serif;outline:none;color:var(--hdg);font-weight:600;flex-shrink:0}
+.reunion-fecha:focus{border-color:var(--ht)}
+.reunion-nota{flex:1;padding:8px 12px;border:1.5px solid var(--hg);border-radius:10px;font-size:12px;font-family:'Nunito',sans-serif;outline:none;color:var(--hdg);font-weight:500}
+.reunion-nota:focus{border-color:var(--ht)}
+.reunion-del{width:28px;height:28px;border-radius:50%;background:var(--hg);border:none;cursor:pointer;font-size:13px;color:var(--hmg);flex-shrink:0;line-height:1;display:flex;align-items:center;justify-content:center}
+.reunion-del:hover{background:#FEE2E2;color:#991B1B}
+
+/* === TIMELINE ESTADOS === */
+.tl-wrap{background:var(--how);border-radius:12px;padding:12px 14px;border:1px solid var(--hg)}
+.tl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--hg)}
+.tl-item:last-child{border-bottom:none}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--ht);flex-shrink:0;margin-top:3px}
+.tl-dot.vendido{background:#065F46}
+.tl-dot.perdido{background:#991B1B}
+.tl-estado{font-size:11px;font-weight:700;color:var(--hdt)}
+.tl-fecha{font-size:10px;color:var(--hmg);font-weight:600;margin-top:1px}
+
+/* === CICLO STATS DASHBOARD === */
+.ciclo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+
 @media(max-width:900px){
   .shell{grid-template-columns:1fr;height:auto}
   .sidebar{height:auto}
@@ -718,6 +740,29 @@ tr:hover td{background:#FAFAF8}
 
     <div class="form-section">Comentario comercial</div>
     <textarea class="form-textarea" id="f_coment" placeholder="Contexto, próximos pasos, notas relevantes…"></textarea>
+
+    <div class="form-section">Actividad y reuniones</div>
+    <div class="form-row" style="margin-bottom:12px">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Fecha primer contacto</label>
+        <input class="form-input" id="f_primerContacto" type="date">
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Días en pipeline</label>
+        <div id="f_diasPipeline" style="padding:10px 14px;background:var(--how);border-radius:12px;font-size:13px;font-weight:700;color:var(--hdt);border:1.5px solid var(--hg)">—</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <label class="form-label" style="margin-bottom:0">Reuniones registradas</label>
+        <button type="button" class="btn-ghost btn-sm" onclick="agregarReunion()">+ Agregar reunión</button>
+      </div>
+      <div id="reunionesForm"></div>
+    </div>
+    <div id="historialEstadosBlock" style="display:none;margin-bottom:12px">
+      <label class="form-label" style="display:block;margin-bottom:8px">Historial de estados</label>
+      <div class="tl-wrap" id="historialEstadosList"></div>
+    </div>
 
     <!-- ZONA DE PELIGRO — solo BD, solo al editar -->
     <div class="danger-zone" id="dangerZone" style="display:none">
@@ -1191,6 +1236,41 @@ function renderDashboard(){
   document.getElementById('dashLinea').innerHTML = lineas.map((l,i)=>`
     <div class="meta-row"><div class="meta-label"><span class="meta-name" style="font-size:11px">${l}</span><span class="meta-nums">${fmtM(linVals[i])}</span></div>
     <div class="prog-wrap"><div class="prog-fill" style="width:${Math.round(linVals[i]/lt*100)}%;background:${'var(--ho) var(--ht) var(--hgb) #8A5CF7'.split(' ')[i]}"></div></div></div>`).join('');
+
+  // === CICLO DE VENTA ===
+  const cerradosConFecha = data.filter(d=>['Vendido','Perdido'].includes(d.status)&&d.fechaPrimerContacto);
+  const cicloPromedio = cerradosConFecha.length
+    ? Math.round(cerradosConFecha.reduce((s,d)=>{
+        const dias=Math.round((new Date(d.act)-new Date(d.fechaPrimerContacto))/86400000);
+        return s+Math.max(0,dias);
+      },0)/cerradosConFecha.length)
+    : null;
+  const winRate = (vendidos.length+perdidos.length)>0
+    ? Math.round(vendidos.length/(vendidos.length+perdidos.length)*100) : null;
+  const conReuniones = data.filter(d=>d.reuniones&&d.reuniones.length>0);
+  const reunionesPromedio = conReuniones.length
+    ? (conReuniones.reduce((s,d)=>s+d.reuniones.length,0)/conReuniones.length).toFixed(1) : null;
+  const hoy30 = new Date(now); hoy30.setDate(hoy30.getDate()-30);
+  const cerradosRecientes = data.filter(d=>['Vendido','Perdido'].includes(d.status)&&new Date(d.act)>=hoy30).length;
+
+  // Buscar o crear el bloque ciclo
+  let cicloEl = document.getElementById('dashCiclo');
+  if(!cicloEl){
+    cicloEl = document.createElement('div');
+    cicloEl.id = 'dashCiclo';
+    cicloEl.style.marginBottom='18px';
+    const dashPage = document.getElementById('page-dashboard');
+    const kpiEl = document.getElementById('dashKpis');
+    if(kpiEl && dashPage) dashPage.insertBefore(cicloEl, kpiEl.nextSibling);
+  }
+  cicloEl.innerHTML = `
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.08em;color:var(--hmg);margin-bottom:8px;text-transform:uppercase">Ciclo de venta</div>
+    <div class="ciclo-grid">
+      <div class="kpi-card"><div class="kpi-label">Ciclo promedio</div><div class="kpi-num" style="font-size:28px">${cicloPromedio!==null?cicloPromedio+'d':'—'}</div><div class="kpi-sub">Primer contacto → cierre</div></div>
+      <div class="kpi-card"><div class="kpi-label">Win rate</div><div class="kpi-num" style="font-size:28px;color:${winRate>=50?'var(--hgb)':'var(--ho)'}">${winRate!==null?winRate+'%':'—'}</div><div class="kpi-sub">${vendidos.length} ganadas · ${perdidos.length} perdidas</div></div>
+      <div class="kpi-card"><div class="kpi-label">Reuniones promedio</div><div class="kpi-num" style="font-size:28px">${reunionesPromedio!==null?reunionesPromedio:'—'}</div><div class="kpi-sub">Por oportunidad activa</div></div>
+      <div class="kpi-card"><div class="kpi-label">Cierres últimos 30d</div><div class="kpi-num" style="font-size:28px">${cerradosRecientes}</div><div class="kpi-sub">Ganadas + perdidas</div></div>
+    </div>`;
 
   const top5 = riesgos.slice(0,6);
   document.getElementById('dashAlertas').innerHTML = top5.length
@@ -1667,6 +1747,13 @@ function openEditOpp(idx){
   document.getElementById('f_npagos').value = o.npagos||3;
   document.getElementById('f_dur').value    = o.dur||3;
   document.getElementById('f_coment').value = o.coment||'';
+  // Actividad
+  const fpc = document.getElementById('f_primerContacto');
+  if(fpc){ fpc.value = o.fechaPrimerContacto||''; }
+  limpiarReuniones();
+  (o.reuniones||[]).forEach(r=>agregarReunion(r.fecha,r.nota));
+  renderHistorial(o.historialEstados||[]);
+  actualizarDiasPipeline();
   calcProb();
   renderPagosForm();
   // Zona de peligro: solo si es BD y es edición
@@ -1681,6 +1768,10 @@ function resetForm(){
   ['f_dec','f_urg','f_pre'].forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=false; });
   const np=document.getElementById('f_npagos'); if(np) np.value=3;
   const fd=document.getElementById('f_dur');    if(fd) fd.value=3;
+  const fpc=document.getElementById('f_primerContacto'); if(fpc) fpc.value='';
+  limpiarReuniones();
+  const hblk=document.getElementById('historialEstadosBlock'); if(hblk) hblk.style.display='none';
+  const chip=document.getElementById('f_diasPipeline'); if(chip) chip.textContent='—';
   calcProb(); renderPagosForm();
 }
 
@@ -1726,6 +1817,9 @@ function saveOpp(){
     dec, urg, pre, prob, npagos:n, pagos,
     dur:parseInt(document.getElementById('f_dur')?.value)||3,
     coment:document.getElementById('f_coment')?.value||'',
+    fechaPrimerContacto:document.getElementById('f_primerContacto')?.value||'',
+    reuniones:getReunionesDatos(),
+    historialEstados:buildHistorialEstados(document.getElementById('f_estado')?.value||''),
     act:new Date().toISOString().split('T')[0]
   };
   // Guardar en Firestore (onSnapshot actualizará data[] automáticamente)
@@ -1760,6 +1854,80 @@ function toast(msg){ const t=document.getElementById('toast'); if(!t) return; t.
 // ========================
 // Inicializar mapa de columnas importación
 document.getElementById('mapTbody').innerHTML = COLMAP.map(([e,n,t])=>`<tr><td style="font-weight:700;color:var(--hdt)">${e}</td><td><span class="badge b-form">${n}</span></td><td style="font-size:11px;color:var(--hmg);font-weight:600">${t}</td></tr>`).join('');
+
+// ========================
+// ACTIVIDAD — REUNIONES
+// ========================
+let reunionesCount = 0;
+
+window.agregarReunion = function(fecha='', nota=''){
+  const id = reunionesCount++;
+  const div = document.createElement('div');
+  div.className = 'reunion-row';
+  div.id = 'reunionRow_' + id;
+  div.innerHTML = `
+    <input type="date" class="reunion-fecha" id="reunFecha_${id}" value="${fecha}">
+    <input type="text" class="reunion-nota" id="reunNota_${id}" placeholder="Nota de la reunión…" value="${nota}">
+    <button type="button" class="reunion-del" onclick="eliminarReunion('${id}')" title="Eliminar">✕</button>
+  `;
+  document.getElementById('reunionesForm').appendChild(div);
+  // actualizar días en pipeline si hay fecha primer contacto
+  actualizarDiasPipeline();
+};
+
+window.eliminarReunion = function(id){
+  const row = document.getElementById('reunionRow_' + id);
+  if(row) row.remove();
+};
+
+function limpiarReuniones(){
+  const f = document.getElementById('reunionesForm');
+  if(f) f.innerHTML = '';
+  reunionesCount = 0;
+}
+
+function getReunionesDatos(){
+  const rows = document.querySelectorAll('#reunionesForm .reunion-row');
+  const result = [];
+  rows.forEach(row => {
+    const id = row.id.replace('reunionRow_','');
+    const fecha = document.getElementById('reunFecha_'+id)?.value;
+    const nota  = document.getElementById('reunNota_'+id)?.value || '';
+    if(fecha) result.push({fecha, nota});
+  });
+  return result.sort((a,b)=>a.fecha>b.fecha?1:-1);
+}
+
+// Actualiza el chip "Días en pipeline" dentro del modal
+window.actualizarDiasPipeline = function(){
+  const fpc = document.getElementById('f_primerContacto')?.value;
+  const chip = document.getElementById('f_diasPipeline');
+  if(!chip) return;
+  if(!fpc){ chip.textContent='—'; return; }
+  const dias = Math.round((new Date()-new Date(fpc))/86400000);
+  chip.textContent = dias >= 0 ? dias + ' días' : '—';
+};
+
+function buildHistorialEstados(newStatus){
+  const hoy = now.toISOString().split('T')[0];
+  if(editIdx === null) return [{estado: newStatus, fecha: hoy}];
+  const prev = data[editIdx]?.historialEstados || [];
+  const prevStatus = data[editIdx]?.status;
+  if(prevStatus !== newStatus) return [...prev, {estado: newStatus, fecha: hoy}];
+  return prev.length ? prev : [{estado: newStatus, fecha: hoy}];
+}
+
+function renderHistorial(historial){
+  const blk = document.getElementById('historialEstadosBlock');
+  const lst = document.getElementById('historialEstadosList');
+  if(!blk || !lst) return;
+  if(!historial || !historial.length){ blk.style.display='none'; return; }
+  blk.style.display = 'block';
+  lst.innerHTML = historial.map(h=>{
+    const cls = h.estado==='Vendido'?'vendido':h.estado==='Perdido'?'perdido':'';
+    return `<div class="tl-item"><div class="tl-dot ${cls}"></div><div><div class="tl-estado">${h.estado}</div><div class="tl-fecha">${h.fecha}</div></div></div>`;
+  }).join('');
+}
 
 // ========================
 // EXPONER FUNCIONES AL HTML
@@ -1797,6 +1965,9 @@ window.addHost           = addHost;
 window.removeHost        = removeHost;
 window.cerrarSesion      = cerrarSesion;
 window.recargarPipeline  = recargarPipeline;
+
+// Listener para actualizar días en pipeline al cambiar fecha primer contacto
+document.getElementById('f_primerContacto')?.addEventListener('change', actualizarDiasPipeline);
 
 // Arrancar Firebase — carga datos y escucha cambios en tiempo real
 initFirebase();
