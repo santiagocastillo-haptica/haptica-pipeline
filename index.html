@@ -456,7 +456,7 @@ tr:hover td{background:#FAFAF8}
         <div class="filters-bar">
           <input class="filter-input" type="text" placeholder="🔍 Buscar cuenta o cliente..." id="sQ" oninput="renderPipeline()">
           <select class="filter-select" id="sEstado" onchange="renderPipeline()"><option value="">Todos los estados</option><option>Cultivando / Prospectando</option><option>Levantar brief</option><option>Formulando</option><option>Buscando cerrar venta</option><option>Vendido</option><option>Perdido</option></select>
-          <select class="filter-select" id="sResp" onchange="renderPipeline()"><option value="">Todos los responsables</option><option>Nicholle Torres</option><option>Angélica Flechas</option><option>Daniel Pinilla</option><option>Maria Alejandra Corrales</option><option>Ma Camila Venegas</option></select>
+          <select class="filter-select" id="sResp" onchange="renderPipeline()"><option value="">Todos los responsables</option><option>Nicholle Torres</option><option>Santiago Castillo</option><option>Angélica</option><option>Daniel</option><option>Mariaca</option><option>Mariale</option><option>Camilo</option></select>
           <select class="filter-select" id="sPais" onchange="renderPipeline()"><option value="">Todos los países</option><option>Colombia</option><option>Chile</option><option>México</option><option>Guatemala</option></select>
           <select class="filter-select" id="sLinea" onchange="renderPipeline()"><option value="">Todas las líneas</option><option>Legal service design</option><option>Service Design</option><option>Inclusion</option></select>
           <select class="filter-select" id="sRiesgo" onchange="renderPipeline()"><option value="">Todas</option><option value="si">⚠ En riesgo</option></select>
@@ -472,7 +472,7 @@ tr:hover td{background:#FAFAF8}
     <div class="page" id="page-kanban">
       <div class="page-header"><div class="page-title">Vista Kanban</div><div class="page-sub">Pipeline por etapa comercial</div></div>
       <div class="filters-bar" style="margin-bottom:14px">
-        <select class="filter-select" id="kResp" onchange="renderKanban()"><option value="">Todos los responsables</option><option>Nicholle Torres</option><option>Angélica Flechas</option><option>Daniel Pinilla</option><option>Maria Alejandra Corrales</option><option>Ma Camila Venegas</option></select>
+        <select class="filter-select" id="kResp" onchange="renderKanban()"><option value="">Todos los responsables</option><option>Nicholle Torres</option><option>Santiago Castillo</option><option>Angélica</option><option>Daniel</option><option>Mariaca</option><option>Mariale</option><option>Camilo</option></select>
       </div>
       <div class="kanban" id="kanbanBoard"></div>
     </div>
@@ -481,7 +481,7 @@ tr:hover td{background:#FAFAF8}
     <div class="page" id="page-mipipeline">
       <div class="page-header"><div class="page-title">Mi pipeline</div></div>
       <div class="card" style="margin-bottom:14px">
-        <select class="filter-select" id="miHost" onchange="renderMiPipeline()" style="border-radius:12px"><option value="Nicholle Torres">Nicholle Torres</option><option value="Angélica Flechas">Angélica Flechas</option><option value="Daniel Pinilla">Daniel Pinilla</option><option value="Maria Alejandra Corrales">Mariale</option><option value="Ma Camila Venegas">Mariaca</option></select>
+        <select class="filter-select" id="miHost" onchange="renderMiPipeline()" style="border-radius:12px"><option value="Nicholle Torres">Nicholle Torres</option><option value="Santiago Castillo">Santiago Castillo</option><option value="Angélica">Angélica</option><option value="Daniel">Daniel</option><option value="Mariaca">Mariaca</option><option value="Mariale">Mariale</option><option value="Camilo">Camilo</option></select>
       </div>
       <div id="miKpis" class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px"></div>
       <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Oportunidad</th><th>Estado</th><th>Valor</th><th>Prob.</th><th>Mes</th><th></th></tr></thead><tbody id="miTbody"></tbody></table></div></div>
@@ -491,7 +491,7 @@ tr:hover td{background:#FAFAF8}
     <div class="page" id="page-semanal">
       <div class="page-header"><div class="page-title">Seguimiento semanal</div><div class="page-sub">Semana · Abril 2026</div></div>
       <div class="card" style="margin-bottom:14px">
-        <select class="filter-select" id="semHost" onchange="renderSemanal()" style="border-radius:12px"><option value="Nicholle Torres">Nicholle Torres</option><option value="Angélica Flechas">Angélica Flechas</option><option value="Daniel Pinilla">Daniel Pinilla</option><option value="Maria Alejandra Corrales">Mariale</option><option value="Ma Camila Venegas">Mariaca</option></select>
+        <select class="filter-select" id="semHost" onchange="renderSemanal()" style="border-radius:12px"><option value="Nicholle Torres">Nicholle Torres</option><option value="Santiago Castillo">Santiago Castillo</option><option value="Angélica">Angélica</option><option value="Daniel">Daniel</option><option value="Mariaca">Mariaca</option><option value="Mariale">Mariale</option><option value="Camilo">Camilo</option></select>
       </div>
       <div id="semList"></div>
     </div>
@@ -660,7 +660,7 @@ tr:hover td{background:#FAFAF8}
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Responsable *</label>
-        <select class="form-select" id="f_resp"><option>Nicholle Torres</option><option>Angélica Flechas</option><option>Daniel Pinilla</option><option>Maria Alejandra Corrales</option><option>Ma Camila Venegas</option></select>
+        <select class="form-select" id="f_resp"><option>Nicholle Torres</option><option>Santiago Castillo</option><option>Angélica</option><option>Daniel</option><option>Mariaca</option><option>Mariale</option><option>Camilo</option></select>
       </div>
       <div class="form-group"><label class="form-label">Estado *</label>
         <select class="form-select" id="f_estado"><option>Cultivando / Prospectando</option><option>Levantar brief</option><option>Formulando</option><option>Buscando cerrar venta</option><option>Vendido</option><option>Perdido</option></select>
@@ -776,12 +776,15 @@ const oppsCol = collection(db, 'oportunidades');
 
 // Mapa de correos → rol y nombre
 const USER_ROLES = {
-  'nicholle.torres@haptica.co':  { role:'bd',   name:'Nicholle Torres' },
-  'angelica.flechas@haptica.co': { role:'bd',   name:'Angélica Flechas' },
-  'daniel.pinilla@haptica.co':   { role:'host', name:'Daniel Pinilla' },
-  'mariale@haptica.co':          { role:'host', name:'Mariale' },
-  'mariaca@haptica.co':          { role:'host', name:'Mariaca' },
-  'camilo@haptica.co':           { role:'host', name:'Camilo' },
+  // Administradores / BD — acceso y control total
+  'nicholle.torres@haptica.co':   { role:'bd', name:'Nicholle Torres' },
+  'santiago.castillo@haptica.co': { role:'bd', name:'Santiago Castillo' },
+  'angelica@haptica.co':          { role:'bd', name:'Angélica' },
+  // Hosts — acceso a sus cuentas y pipeline general
+  'daniel@haptica.co':            { role:'host', name:'Daniel' },
+  'mariacamila@haptica.co':       { role:'host', name:'Mariaca' },
+  'mariaalejandra@haptica.co':    { role:'host', name:'Mariale' },
+  'camilo.nino@haptica.co':       { role:'host', name:'Camilo' },
 };
 
 // ========================
@@ -858,6 +861,14 @@ onAuthStateChanged(auth, (user) => {
       if(el){ el.style.opacity=perfil.role==='bd'?'1':'0.35'; el.style.pointerEvents=perfil.role==='bd'?'':'none'; }
     });
 
+    // Si es host, preseleccionar su nombre en "Mi pipeline" y "Seguimiento"
+    if(perfil.role==='host'){
+      const miHost=document.getElementById('miHost');
+      const semHost=document.getElementById('semHost');
+      if(miHost) miHost.value=perfil.name;
+      if(semHost) semHost.value=perfil.name;
+    }
+
     // Iniciar Firebase data
     initFirebase();
 
@@ -920,7 +931,7 @@ const SEED_DATA = [
 // data vive en memoria y se sincroniza desde Firestore
 let data = [];
 let proyeccionIds = new Set();
-let hosts = ['Daniel Pinilla','Mariale (Maria Alejandra Corrales)','Mariaca (Ma Camila Venegas)','Camilo'];
+let hosts = ['Daniel','Mariale','Mariaca','Camilo'];
 
 // ========================
 // FIREBASE — SINCRONIZACIÓN EN TIEMPO REAL
@@ -1314,7 +1325,7 @@ function renderMetas(){
     return `<div class="meta-row"><div class="meta-label"><span class="meta-name">${p}</span><span class="meta-nums">${fmtM(a)} / ${fmtM(m)}</span></div><div class="prog-wrap"><div class="prog-fill" style="width:${Math.min(a/m*100,100)}%;background:var(--hgb)"></div></div></div>`;
   }).join('')}</div>`;
 
-  const hs = ['Nicholle Torres','Angélica Flechas','Daniel Pinilla','Maria Alejandra Corrales','Ma Camila Venegas'];
+  const hs = ['Nicholle Torres','Santiago Castillo','Angélica','Daniel','Mariaca','Mariale','Camilo'];
   document.getElementById('mt-hosts').innerHTML = `<div class="card">${currentRole==='bd'
     ? `<div class="card-header"><div class="card-title">Desempeño por host</div></div><div class="tbl-wrap"><table><thead><tr><th>Host</th><th>Pipeline</th><th>Ponderado</th><th>Cerrado</th><th>Opp.</th><th>Riesgo</th></tr></thead><tbody>${hs.map(h=>{
         const ma=data.filter(d=>d.author===h&&!['Vendido','Perdido','Retiro'].includes(d.status));
