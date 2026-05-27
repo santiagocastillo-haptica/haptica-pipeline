@@ -292,7 +292,59 @@ tr:hover td{background:#FAFAF8}
 </head>
 <body>
 
-<div class="shell">
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen" style="display:none;position:fixed;inset:0;background:var(--hdt);z-index:500;align-items:center;justify-content:center;flex-direction:column">
+  <div style="width:100%;max-width:400px;padding:24px">
+    <!-- Logo -->
+    <div style="text-align:center;margin-bottom:32px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:0.08em;color:#fff;line-height:1">HÁPTICA</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:0.12em;text-transform:uppercase;font-family:'Nunito',sans-serif;margin-top:4px">Pipeline comercial · 2026</div>
+    </div>
+
+    <!-- Card login -->
+    <div style="background:var(--hw);border-radius:24px;padding:28px;box-shadow:0 24px 64px rgba(0,0,0,0.3)">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.05em;color:var(--hdt);margin-bottom:6px">Iniciar sesión</div>
+      <div style="font-size:12px;color:var(--hmg);font-weight:600;margin-bottom:20px">Accede con tu cuenta de HÁPTICA</div>
+
+      <!-- Error msg -->
+      <div id="loginError" style="display:none;background:#FEE2E2;border:1px solid #FECACA;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:600;color:#991B1B;margin-bottom:14px"></div>
+
+      <!-- Email -->
+      <div style="margin-bottom:12px">
+        <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--hmg);display:block;margin-bottom:5px">Correo electrónico</label>
+        <input id="loginEmail" type="email" placeholder="tu@haptica.co" style="width:100%;padding:11px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;color:var(--hdg)" onfocus="this.style.borderColor='var(--ht)'" onblur="this.style.borderColor='var(--hg)'" onkeydown="if(event.key==='Enter')loginConCorreo()">
+      </div>
+
+      <!-- Password -->
+      <div style="margin-bottom:20px">
+        <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--hmg);display:block;margin-bottom:5px">Contraseña</label>
+        <input id="loginPassword" type="password" placeholder="••••••••" style="width:100%;padding:11px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;color:var(--hdg)" onfocus="this.style.borderColor='var(--ht)'" onblur="this.style.borderColor='var(--hg)'" onkeydown="if(event.key==='Enter')loginConCorreo()">
+      </div>
+
+      <!-- Btn correo -->
+      <button onclick="loginConCorreo()" id="btnLoginCorreo" style="width:100%;background:var(--ho);color:#fff;border:none;border-radius:999px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:12px;transition:all 0.15s">
+        Ingresar
+      </button>
+
+      <!-- Divider -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="flex:1;height:1px;background:var(--hg)"></div>
+        <span style="font-size:11px;color:var(--hmg);font-weight:600">o continúa con</span>
+        <div style="flex:1;height:1px;background:var(--hg)"></div>
+      </div>
+
+      <!-- Btn Google -->
+      <button onclick="loginConGoogle()" id="btnLoginGoogle" style="width:100%;background:var(--hw);color:var(--hdg);border:1.5px solid var(--hg);border-radius:999px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continuar con Google
+      </button>
+    </div>
+
+    <div style="text-align:center;margin-top:16px;font-size:11px;color:rgba(255,255,255,0.3);font-family:'Nunito',sans-serif">Solo para uso interno del equipo HÁPTICA</div>
+  </div>
+</div>
+
+<div class="shell" id="appShell" style="display:none">
 
 <!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
@@ -372,9 +424,12 @@ tr:hover td{background:#FAFAF8}
   <div class="topbar">
     <div class="topbar-title" id="topbarTitle">Dashboard ejecutivo</div>
     <div class="topbar-right">
-      <div class="topbar-date">Abril 2026</div>
+      <div class="topbar-date" id="topbarUserEmail" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
       <button class="btn-primary btn-sm" onclick="openNewOpp()">+ Nueva cuenta</button>
       <div class="avatar avatar-bd" id="topAvatar">BD</div>
+      <button onclick="cerrarSesion()" title="Cerrar sesión" style="background:rgba(0,0,0,0.06);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--hmg);transition:all 0.15s" onmouseover="this.style.background='#fee2e2';this.style.color='#991b1b'" onmouseout="this.style.background='rgba(0,0,0,0.06)';this.style.color='var(--hmg)'">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
     </div>
   </div>
 
@@ -589,7 +644,7 @@ tr:hover td{background:#FAFAF8}
 
   </div><!-- end main scroll -->
 </div><!-- end main-col -->
-</div><!-- end shell -->
+</div><!-- end shell / appShell -->
 
 <!-- MODAL OPORTUNIDAD -->
 <div class="modal-bg" id="modalOpp">
@@ -698,7 +753,8 @@ tr:hover td{background:#FAFAF8}
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, setDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // ========================
 // FIREBASE CONFIG
@@ -714,7 +770,111 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
+const auth = getAuth(firebaseApp);
+const googleProvider = new GoogleAuthProvider();
 const oppsCol = collection(db, 'oportunidades');
+
+// Mapa de correos → rol y nombre
+const USER_ROLES = {
+  'nicholle.torres@haptica.co':  { role:'bd',   name:'Nicholle Torres' },
+  'angelica.flechas@haptica.co': { role:'bd',   name:'Angélica Flechas' },
+  'daniel.pinilla@haptica.co':   { role:'host', name:'Daniel Pinilla' },
+  'mariale@haptica.co':          { role:'host', name:'Mariale' },
+  'mariaca@haptica.co':          { role:'host', name:'Mariaca' },
+  'camilo@haptica.co':           { role:'host', name:'Camilo' },
+};
+
+// ========================
+// AUTH — LOGIN / LOGOUT
+// ========================
+window.loginConCorreo = async function(){
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl    = document.getElementById('loginError');
+  const btn      = document.getElementById('btnLoginCorreo');
+  if(!email||!password){ mostrarErrorLogin('Completa el correo y la contraseña'); return; }
+  btn.textContent='Ingresando…'; btn.disabled=true;
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch(e){
+    btn.textContent='Ingresar'; btn.disabled=false;
+    const msgs = { 'auth/invalid-credential':'Correo o contraseña incorrectos','auth/user-not-found':'Usuario no encontrado','auth/wrong-password':'Contraseña incorrecta','auth/too-many-requests':'Demasiados intentos. Espera un momento.' };
+    mostrarErrorLogin(msgs[e.code]||'Error al iniciar sesión. Intenta de nuevo.');
+  }
+};
+
+window.loginConGoogle = async function(){
+  const btn = document.getElementById('btnLoginGoogle');
+  btn.textContent='Conectando…'; btn.disabled=true;
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch(e){
+    btn.innerHTML=`<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continuar con Google`;
+    btn.disabled=false;
+    mostrarErrorLogin('Error al conectar con Google. Intenta de nuevo.');
+  }
+};
+
+window.cerrarSesion = async function(){
+  await signOut(auth);
+};
+
+function mostrarErrorLogin(msg){
+  const el = document.getElementById('loginError');
+  el.textContent = msg; el.style.display='block';
+}
+
+// ========================
+// AUTH — ESTADO DE SESIÓN
+// ========================
+onAuthStateChanged(auth, (user) => {
+  const loginScreen = document.getElementById('loginScreen');
+  const appShell    = document.getElementById('appShell');
+  const overlay     = document.getElementById('loadingOverlay');
+
+  if(user){
+    // Usuario autenticado
+    const email   = user.email?.toLowerCase() || '';
+    const perfil  = USER_ROLES[email] || { role:'host', name: user.displayName || email.split('@')[0] };
+    currentRole   = perfil.role;
+
+    // Actualizar UI
+    loginScreen.style.display = 'none';
+    appShell.style.display    = 'grid';
+
+    const av = document.getElementById('topAvatar');
+    if(av){ av.textContent=perfil.role==='bd'?'BD':'HC'; av.className=`avatar ${perfil.role==='bd'?'avatar-bd':'avatar-host'}`; }
+
+    const emailEl = document.getElementById('topbarUserEmail');
+    if(emailEl) emailEl.textContent = perfil.name;
+
+    // Ocultar selector de rol (ya no se necesita — el rol viene del login)
+    const roleSelect = document.getElementById('roleSelect');
+    if(roleSelect) roleSelect.closest('.sb-role').style.display='none';
+
+    // Aplicar permisos BD
+    ['sbImport','sbConfig'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){ el.style.opacity=perfil.role==='bd'?'1':'0.35'; el.style.pointerEvents=perfil.role==='bd'?'':'none'; }
+    });
+
+    // Iniciar Firebase data
+    initFirebase();
+
+  } else {
+    // No autenticado — mostrar login
+    if(overlay) overlay.style.display='none';
+    loginScreen.style.display = 'flex';
+    appShell.style.display    = 'none';
+
+    // Resetear campos
+    const em=document.getElementById('loginEmail'); if(em) em.value='';
+    const pw=document.getElementById('loginPassword'); if(pw) pw.value='';
+    const er=document.getElementById('loginError'); if(er) er.style.display='none';
+    const btn=document.getElementById('btnLoginCorreo'); if(btn){btn.textContent='Ingresar';btn.disabled=false;}
+    const bg=document.getElementById('btnLoginGoogle'); if(bg){bg.disabled=false;}
+  }
+});
 
 // ========================
 // DATA & CONSTANTS
