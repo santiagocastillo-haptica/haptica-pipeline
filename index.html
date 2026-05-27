@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HÁPTICA · Pipeline Comercial 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --ho:#FF4B1F;--hc:#F15A24;
@@ -14,8 +14,8 @@
   --r:16px;--rL:24px;--rXL:32px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito','Inter',Arial,sans-serif;background:var(--hlb);color:var(--hdg);font-size:13px;overflow-x:hidden;height:100vh}
-h1,h2,h3,.display,.kpi-num{font-family:'Bebas Neue','Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.04em}
+body{font-family:'Montserrat',sans-serif;font-weight:400;background:var(--hlb);color:var(--hdg);font-size:13px;overflow-x:hidden;height:100vh}
+h1,h2,h3,.display,.kpi-num{font-family:'Montserrat',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.04em}
 
 /* === LAYOUT === */
 .shell{display:grid;grid-template-columns:220px 1fr;height:100vh;overflow:hidden}
@@ -23,13 +23,13 @@ h1,h2,h3,.display,.kpi-num{font-family:'Bebas Neue','Oswald',sans-serif;text-tra
 /* === SIDEBAR === */
 .sidebar{background:var(--hdt);display:flex;flex-direction:column;overflow-y:auto;height:100vh}
 .sb-logo{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,0.08)}
-.sb-logo-text{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.08em;color:var(--hw);line-height:1}
-.sb-logo-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:0.12em;text-transform:uppercase;font-family:'Nunito',sans-serif;margin-top:2px}
+.sb-logo-text{font-family:'Montserrat',sans-serif;font-weight:700;font-size:22px;letter-spacing:0.1em;color:var(--hw);line-height:1;text-transform:uppercase}
+.sb-logo-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:0.12em;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:300;margin-top:2px}
 .sb-role{margin:14px 16px;background:rgba(255,255,255,0.07);border-radius:12px;padding:10px 12px}
 .sb-role-label{font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
-.sb-role-select{background:transparent;border:none;color:#fff;font-size:12px;font-family:'Nunito',sans-serif;cursor:pointer;outline:none;width:100%}
+.sb-role-select{background:transparent;border:none;color:#fff;font-size:12px;font-family:'Montserrat',sans-serif;font-weight:400;cursor:pointer;outline:none;width:100%}
 .sb-role-select option{color:#000}
-.sb-section{padding:6px 12px;font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);font-family:'Nunito',sans-serif;margin-top:8px}
+.sb-section{padding:6px 12px;font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);font-family:'Montserrat',sans-serif;font-weight:700;margin-top:8px}
 .sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;color:rgba(255,255,255,0.65);font-size:12px;font-weight:600;transition:all 0.15s;border-left:3px solid transparent;margin:1px 0}
 .sb-item:hover{background:rgba(255,255,255,0.06);color:#fff}
 .sb-item.active{background:rgba(255,75,31,0.15);color:#fff;border-left-color:var(--ho)}
@@ -44,7 +44,7 @@ h1,h2,h3,.display,.kpi-num{font-family:'Bebas Neue','Oswald',sans-serif;text-tra
 
 /* === TOPBAR === */
 .topbar{background:var(--hw);border-bottom:1px solid var(--hg);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.topbar-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.06em;color:var(--ht)}
+.topbar-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:16px;letter-spacing:0.06em;color:var(--ht);text-transform:uppercase}
 .topbar-right{display:flex;align-items:center;gap:12px}
 .topbar-date{font-size:11px;color:var(--hmg);font-weight:600}
 .avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
@@ -55,7 +55,7 @@ h1,h2,h3,.display,.kpi-num{font-family:'Bebas Neue','Oswald',sans-serif;text-tra
 .main{padding:20px 24px;overflow-y:auto;flex:1}
 .page{display:none}.page.active{display:block}
 .page-header{margin-bottom:20px}
-.page-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.05em;color:var(--hdt);line-height:1}
+.page-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:28px;letter-spacing:0.05em;color:var(--hdt);line-height:1;text-transform:uppercase}
 .page-sub{font-size:12px;color:var(--hmg);margin-top:2px;font-weight:500}
 
 /* === KPI === */
@@ -69,7 +69,7 @@ h1,h2,h3,.display,.kpi-num{font-family:'Bebas Neue','Oswald',sans-serif;text-tra
 .kpi-card.orange .kpi-label,.kpi-card.orange .kpi-sub{color:rgba(255,255,255,0.7)}
 .kpi-card.orange .kpi-num{color:#fff}
 .kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--hmg);font-weight:700;margin-bottom:6px}
-.kpi-num{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:0.02em;color:var(--hdt);line-height:1}
+.kpi-num{font-family:'Montserrat',sans-serif;font-weight:700;font-size:30px;letter-spacing:0.02em;color:var(--hdt);line-height:1}
 .kpi-sub{font-size:11px;color:var(--hmg);margin-top:4px;font-weight:500}
 .kpi-bar{height:3px;background:rgba(0,0,0,0.08);border-radius:2px;margin-top:10px;overflow:hidden}
 .kpi-bar-fill{height:100%;border-radius:2px}
@@ -78,24 +78,24 @@ h1,h2,h3,.display,.kpi-num{font-family:'Bebas Neue','Oswald',sans-serif;text-tra
 /* === CARDS === */
 .card{background:var(--hw);border:1px solid var(--hg);border-radius:var(--rL);padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.04)}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.05em;color:var(--hdt)}
+.card-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;letter-spacing:0.05em;color:var(--hdt);text-transform:uppercase}
 .card-meta{font-size:11px;color:var(--hmg)}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
 
 /* === BUTTONS === */
-.btn-primary{background:var(--ho);color:#fff;border:none;border-radius:999px;padding:9px 20px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;letter-spacing:0.02em}
+.btn-primary{background:var(--ho);color:#fff;border:none;border-radius:999px;padding:9px 20px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.15s;letter-spacing:0.02em}
 .btn-primary:hover{background:#e03d10;transform:translateY(-1px)}
-.btn-secondary{background:var(--ht);color:#fff;border:none;border-radius:999px;padding:9px 20px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s}
+.btn-secondary{background:var(--ht);color:#fff;border:none;border-radius:999px;padding:9px 20px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.15s}
 .btn-secondary:hover{background:var(--hgb)}
-.btn-ghost{background:var(--hw);color:var(--ht);border:1.5px solid var(--hg);border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s}
+.btn-ghost{background:var(--hw);color:var(--ht);border:1.5px solid var(--hg);border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.15s}
 .btn-ghost:hover{border-color:var(--ht);background:var(--how)}
-.btn-danger{background:#fff;color:#991B1B;border:1.5px solid #FECACA;border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s}
+.btn-danger{background:#fff;color:#991B1B;border:1.5px solid #FECACA;border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.15s}
 .btn-danger:hover{background:#FEE2E2;border-color:#F87171}
 .btn-sm{padding:5px 14px;font-size:11px}
 
 /* === BADGES === */
-.badge{display:inline-block;font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px;letter-spacing:0.02em;font-family:'Nunito',sans-serif;white-space:nowrap}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px;letter-spacing:0.02em;font-family:'Montserrat',sans-serif;white-space:nowrap}
 .b-prosp{background:#E8F4FD;color:#0969DA}
 .b-brief{background:#FFF3CD;color:#7D4F00}
 .b-form{background:#EDE9FE;color:#6941C6}
@@ -106,9 +106,9 @@ h1,h2,h3,.display,.kpi-num{font-family:'Bebas Neue','Oswald',sans-serif;text-tra
 
 /* === FILTERS === */
 .filters-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center}
-.filter-select{font-size:12px;padding:7px 12px;border:1.5px solid var(--hg);border-radius:999px;background:var(--hw);color:var(--hdg);font-family:'Nunito',sans-serif;cursor:pointer;outline:none;font-weight:600;appearance:none;-webkit-appearance:none;padding-right:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A8A8A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.filter-select{font-size:12px;padding:7px 12px;border:1.5px solid var(--hg);border-radius:999px;background:var(--hw);color:var(--hdg);font-family:'Montserrat',sans-serif;cursor:pointer;outline:none;font-weight:600;appearance:none;-webkit-appearance:none;padding-right:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A8A8A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
 .filter-select:focus{border-color:var(--ht)}
-.filter-input{font-size:12px;padding:7px 14px;border:1.5px solid var(--hg);border-radius:999px;background:var(--hw);color:var(--hdg);font-family:'Nunito',sans-serif;outline:none;font-weight:600;min-width:180px}
+.filter-input{font-size:12px;padding:7px 14px;border:1.5px solid var(--hg);border-radius:999px;background:var(--hw);color:var(--hdg);font-family:'Montserrat',sans-serif;outline:none;font-weight:600;min-width:180px}
 .filter-input:focus{border-color:var(--ht)}
 .filter-input::placeholder{color:var(--hmg)}
 
@@ -116,7 +116,7 @@ h1,h2,h3,.display,.kpi-num{font-family:'Bebas Neue','Oswald',sans-serif;text-tra
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
 thead tr{background:var(--hdt)}
-th{color:rgba(255,255,255,0.85);font-size:9px;text-transform:uppercase;letter-spacing:0.1em;padding:10px 14px;text-align:left;font-family:'Nunito',sans-serif;font-weight:700;white-space:nowrap;cursor:pointer}
+th{color:rgba(255,255,255,0.85);font-size:9px;text-transform:uppercase;letter-spacing:0.1em;padding:10px 14px;text-align:left;font-family:'Montserrat',sans-serif;font-weight:700;white-space:nowrap;cursor:pointer}
 th:hover{background:var(--hgb)}
 td{padding:11px 14px;border-bottom:1px solid var(--hg);vertical-align:middle;font-size:12px}
 tr:last-child td{border-bottom:none}
@@ -126,7 +126,7 @@ tr:hover td{background:#FAFAF8}
 .td-right{text-align:right}
 
 /* === PROB CHIP === */
-.prob-chip{display:inline-block;font-size:10px;font-weight:800;padding:4px 10px;border-radius:999px;font-family:'Nunito',sans-serif}
+.prob-chip{display:inline-block;font-size:10px;font-weight:800;padding:4px 10px;border-radius:999px;font-family:'Montserrat',sans-serif}
 .prob-hi{background:#D1FAE5;color:#065F46}
 .prob-mid{background:#FFF3CD;color:#7D4F00}
 .prob-lo{background:#FEE2E2;color:#991B1B}
@@ -135,9 +135,9 @@ tr:hover td{background:#FAFAF8}
 .kanban{display:flex;gap:12px;overflow-x:auto;padding-bottom:12px}
 .k-col{flex:0 0 190px;background:var(--how);border-radius:var(--r);overflow:hidden}
 .k-col-head{background:var(--hdt);padding:12px 14px;display:flex;align-items:center;justify-content:space-between}
-.k-col-title{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.06em;color:#fff}
-.k-col-count{background:rgba(255,255,255,0.15);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:'Nunito',sans-serif}
-.k-col-val{padding:6px 14px 10px;font-size:10px;color:rgba(255,255,255,0.6);font-weight:700;background:var(--hdt);font-family:'Nunito',sans-serif;letter-spacing:0.04em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,0.08)}
+.k-col-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.08em;color:#fff;text-transform:uppercase}
+.k-col-count{background:rgba(255,255,255,0.15);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:'Montserrat',sans-serif}
+.k-col-val{padding:6px 14px 10px;font-size:10px;color:rgba(255,255,255,0.6);font-weight:700;background:var(--hdt);font-family:'Montserrat',sans-serif;letter-spacing:0.04em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,0.08)}
 .k-col-body{padding:10px;display:flex;flex-direction:column;gap:8px}
 .k-card{background:var(--hw);border-radius:12px;padding:12px;cursor:pointer;border:1px solid var(--hg);transition:all 0.15s;box-shadow:0 1px 6px rgba(0,0,0,0.04)}
 .k-card:hover{border-color:var(--ho);box-shadow:0 4px 16px rgba(255,75,31,0.12);transform:translateY(-1px)}
@@ -169,8 +169,8 @@ tr:hover td{background:#FAFAF8}
 /* === HERO BLOCK === */
 .hero-block{background:linear-gradient(135deg,var(--hdt),var(--hgb));border-radius:var(--rXL);padding:24px 28px;margin-bottom:14px;position:relative;overflow:hidden}
 .hero-block::before{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,75,31,0.12)}
-.hero-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:0.1em;color:rgba(255,255,255,0.6);text-transform:uppercase;margin-bottom:4px}
-.hero-num{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:0.02em;color:#fff;line-height:1}
+.hero-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;color:rgba(255,255,255,0.6);text-transform:uppercase;margin-bottom:4px}
+.hero-num{font-family:'Montserrat',sans-serif;font-weight:700;font-size:44px;letter-spacing:0.02em;color:#fff;line-height:1}
 .hero-sub{font-size:12px;color:rgba(255,255,255,0.6);margin-top:6px;font-weight:600}
 .hero-bar-wrap{background:rgba(255,255,255,0.12);border-radius:4px;height:6px;margin-top:14px}
 .hero-bar-fill{height:100%;border-radius:4px;background:var(--ho)}
@@ -188,16 +188,16 @@ tr:hover td{background:#FAFAF8}
 .modal-bg.open{display:flex}
 .modal{background:var(--hw);border-radius:var(--rXL);padding:28px;max-width:580px;width:95%;max-height:88vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.18)}
 .modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
-.modal-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.05em;color:var(--hdt)}
+.modal-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.05em;color:var(--hdt);text-transform:uppercase}
 .modal-close{width:32px;height:32px;border-radius:50%;background:var(--hg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--hmg);flex-shrink:0;margin-top:2px}
 .modal-close:hover{background:var(--hdt);color:#fff}
-.form-section{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:0.06em;color:var(--ht);border-bottom:1px solid var(--hg);padding-bottom:6px;margin:16px 0 12px}
+.form-section{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;color:var(--ht);text-transform:uppercase;border-bottom:1px solid var(--hg);padding-bottom:6px;margin:16px 0 12px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form-group{margin-bottom:12px}
 .form-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--hmg);display:block;margin-bottom:5px}
-.form-input,.form-select{width:100%;padding:10px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:12px;font-family:'Nunito',sans-serif;outline:none;color:var(--hdg);background:var(--hw);font-weight:600;transition:border-color 0.15s}
+.form-input,.form-select{width:100%;padding:10px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:12px;font-family:'Montserrat',sans-serif;outline:none;color:var(--hdg);background:var(--hw);font-weight:600;transition:border-color 0.15s}
 .form-input:focus,.form-select:focus{border-color:var(--ht)}
-.form-textarea{width:100%;padding:10px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:12px;font-family:'Nunito',sans-serif;outline:none;resize:vertical;min-height:70px;color:var(--hdg);font-weight:500}
+.form-textarea{width:100%;padding:10px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:12px;font-family:'Montserrat',sans-serif;outline:none;resize:vertical;min-height:70px;color:var(--hdg);font-weight:500}
 .form-textarea:focus{border-color:var(--ht)}
 
 /* === PROB BLOCK === */
@@ -207,7 +207,7 @@ tr:hover td{background:#FAFAF8}
 .prob-check-row label{font-size:12px;font-weight:600;color:var(--hdg);cursor:pointer}
 .prob-check-row input[type=checkbox]{accent-color:var(--ht);width:16px;height:16px;cursor:pointer}
 .prob-result{text-align:center;padding:14px;background:var(--hdt);border-radius:14px;margin-top:12px}
-.prob-result-num{font-family:'Bebas Neue',sans-serif;font-size:44px;color:#fff;line-height:1}
+.prob-result-num{font-family:'Montserrat',sans-serif;font-weight:700;font-size:44px;color:#fff;line-height:1}
 .prob-result-label{font-size:10px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;margin-top:2px}
 
 /* === PAGOS === */
@@ -219,7 +219,7 @@ tr:hover td{background:#FAFAF8}
 
 /* === DANGER ZONE === */
 .danger-zone{border:1.5px solid #FECACA;border-radius:16px;padding:16px;margin-top:20px;background:#FFFAFA}
-.danger-zone-title{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.08em;color:#991B1B;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.danger-zone-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#991B1B;margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .danger-zone-desc{font-size:11px;color:var(--hmg);font-weight:600;margin-bottom:12px;line-height:1.5}
 
 /* === CONFIRM DELETE === */
@@ -227,7 +227,7 @@ tr:hover td{background:#FAFAF8}
 .confirm-bg.open{display:flex}
 .confirm-box{background:var(--hw);border-radius:var(--rXL);padding:28px;max-width:420px;width:95%;box-shadow:0 24px 64px rgba(0,0,0,0.2);text-align:center}
 .confirm-icon{font-size:36px;margin-bottom:12px}
-.confirm-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:0.05em;color:#991B1B;margin-bottom:8px}
+.confirm-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:18px;letter-spacing:0.05em;text-transform:uppercase;color:#991B1B;margin-bottom:8px}
 .confirm-msg{font-size:13px;color:var(--hmg);font-weight:600;line-height:1.6;margin-bottom:20px}
 .confirm-name{font-weight:700;color:var(--hdt)}
 
@@ -245,7 +245,7 @@ tr:hover td{background:#FAFAF8}
 
 /* === INNER TABS === */
 .inner-tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--hg)}
-.inner-tab{padding:10px 18px;font-size:12px;font-weight:700;color:var(--hmg);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;text-transform:uppercase;letter-spacing:0.04em;font-family:'Nunito',sans-serif;transition:all 0.15s}
+.inner-tab{padding:10px 18px;font-size:12px;font-weight:700;color:var(--hmg);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;text-transform:uppercase;letter-spacing:0.04em;font-family:'Montserrat',sans-serif;transition:all 0.15s}
 .inner-tab:hover{color:var(--hdt)}
 .inner-tab.active{color:var(--ho);border-bottom-color:var(--ho)}
 
@@ -259,7 +259,7 @@ tr:hover td{background:#FAFAF8}
 .dropzone{border:2px dashed var(--hg);border-radius:var(--rL);padding:36px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--hw)}
 .dropzone:hover{border-color:var(--ho);background:#FFF8F6}
 .dz-icon{font-size:32px;margin-bottom:10px}
-.dz-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.05em;color:var(--hdt);margin-bottom:4px}
+.dz-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:16px;letter-spacing:0.05em;text-transform:uppercase;color:var(--hdt);margin-bottom:4px}
 .dz-sub{font-size:12px;color:var(--hmg);font-weight:600}
 
 /* === REPORT === */
@@ -277,14 +277,14 @@ tr:hover td{background:#FAFAF8}
 .empty{text-align:center;padding:32px;color:var(--hmg);font-size:12px;font-weight:600}
 .empty-icon{font-size:28px;margin-bottom:8px}
 .flex{display:flex;align-items:center;gap:8px}
-.toast{position:fixed;bottom:24px;right:24px;background:var(--hdt);color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:700;z-index:400;opacity:0;transform:translateY(8px);transition:all 0.25s;pointer-events:none;font-family:'Nunito',sans-serif;box-shadow:0 8px 24px rgba(0,63,63,0.25)}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--hdt);color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:700;z-index:400;opacity:0;transform:translateY(8px);transition:all 0.25s;pointer-events:none;font-family:'Montserrat',sans-serif;box-shadow:0 8px 24px rgba(0,63,63,0.25)}
 .toast.show{opacity:1;transform:translateY(0)}
 
 /* === REUNIONES === */
 .reunion-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.reunion-fecha{width:148px;padding:8px 10px;border:1.5px solid var(--hg);border-radius:10px;font-size:12px;font-family:'Nunito',sans-serif;outline:none;color:var(--hdg);font-weight:600;flex-shrink:0}
+.reunion-fecha{width:148px;padding:8px 10px;border:1.5px solid var(--hg);border-radius:10px;font-size:12px;font-family:'Montserrat',sans-serif;outline:none;color:var(--hdg);font-weight:600;flex-shrink:0}
 .reunion-fecha:focus{border-color:var(--ht)}
-.reunion-nota{flex:1;padding:8px 12px;border:1.5px solid var(--hg);border-radius:10px;font-size:12px;font-family:'Nunito',sans-serif;outline:none;color:var(--hdg);font-weight:500}
+.reunion-nota{flex:1;padding:8px 12px;border:1.5px solid var(--hg);border-radius:10px;font-size:12px;font-family:'Montserrat',sans-serif;outline:none;color:var(--hdg);font-weight:500}
 .reunion-nota:focus{border-color:var(--ht)}
 .reunion-del{width:28px;height:28px;border-radius:50%;background:var(--hg);border:none;cursor:pointer;font-size:13px;color:var(--hmg);flex-shrink:0;line-height:1;display:flex;align-items:center;justify-content:center}
 .reunion-del:hover{background:#FEE2E2;color:#991B1B}
@@ -319,13 +319,13 @@ tr:hover td{background:#FAFAF8}
   <div style="width:100%;max-width:400px;padding:24px">
     <!-- Logo -->
     <div style="text-align:center;margin-bottom:32px">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:0.08em;color:#fff;line-height:1">HÁPTICA</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:0.12em;text-transform:uppercase;font-family:'Nunito',sans-serif;margin-top:4px">Pipeline comercial · 2026</div>
+      <div style="font-family:'Montserrat',sans-serif;font-size:52px;letter-spacing:0.08em;color:#fff;line-height:1">HÁPTICA</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:0.12em;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-top:4px">Pipeline comercial · 2026</div>
     </div>
 
     <!-- Card login -->
     <div style="background:var(--hw);border-radius:24px;padding:28px;box-shadow:0 24px 64px rgba(0,0,0,0.3)">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.05em;color:var(--hdt);margin-bottom:6px">Iniciar sesión</div>
+      <div style="font-family:'Montserrat',sans-serif;font-size:22px;letter-spacing:0.05em;color:var(--hdt);margin-bottom:6px">Iniciar sesión</div>
       <div style="font-size:12px;color:var(--hmg);font-weight:600;margin-bottom:20px">Accede con tu cuenta de HÁPTICA</div>
 
       <!-- Error msg -->
@@ -334,17 +334,17 @@ tr:hover td{background:#FAFAF8}
       <!-- Email -->
       <div style="margin-bottom:12px">
         <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--hmg);display:block;margin-bottom:5px">Correo electrónico</label>
-        <input id="loginEmail" type="email" placeholder="tu@haptica.co" style="width:100%;padding:11px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;color:var(--hdg)" onfocus="this.style.borderColor='var(--ht)'" onblur="this.style.borderColor='var(--hg)'" onkeydown="if(event.key==='Enter')loginConCorreo()">
+        <input id="loginEmail" type="email" placeholder="tu@haptica.co" style="width:100%;padding:11px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:13px;font-family:'Montserrat',sans-serif;outline:none;color:var(--hdg)" onfocus="this.style.borderColor='var(--ht)'" onblur="this.style.borderColor='var(--hg)'" onkeydown="if(event.key==='Enter')loginConCorreo()">
       </div>
 
       <!-- Password -->
       <div style="margin-bottom:20px">
         <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--hmg);display:block;margin-bottom:5px">Contraseña</label>
-        <input id="loginPassword" type="password" placeholder="••••••••" style="width:100%;padding:11px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;color:var(--hdg)" onfocus="this.style.borderColor='var(--ht)'" onblur="this.style.borderColor='var(--hg)'" onkeydown="if(event.key==='Enter')loginConCorreo()">
+        <input id="loginPassword" type="password" placeholder="••••••••" style="width:100%;padding:11px 14px;border:1.5px solid var(--hg);border-radius:12px;font-size:13px;font-family:'Montserrat',sans-serif;outline:none;color:var(--hdg)" onfocus="this.style.borderColor='var(--ht)'" onblur="this.style.borderColor='var(--hg)'" onkeydown="if(event.key==='Enter')loginConCorreo()">
       </div>
 
       <!-- Btn correo -->
-      <button onclick="loginConCorreo()" id="btnLoginCorreo" style="width:100%;background:var(--ho);color:#fff;border:none;border-radius:999px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:12px;transition:all 0.15s">
+      <button onclick="loginConCorreo()" id="btnLoginCorreo" style="width:100%;background:var(--ho);color:#fff;border:none;border-radius:999px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;margin-bottom:12px;transition:all 0.15s">
         Ingresar
       </button>
 
@@ -356,13 +356,13 @@ tr:hover td{background:#FAFAF8}
       </div>
 
       <!-- Btn Google -->
-      <button onclick="loginConGoogle()" id="btnLoginGoogle" style="width:100%;background:var(--hw);color:var(--hdg);border:1.5px solid var(--hg);border-radius:999px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s">
+      <button onclick="loginConGoogle()" id="btnLoginGoogle" style="width:100%;background:var(--hw);color:var(--hdg);border:1.5px solid var(--hg);border-radius:999px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         Continuar con Google
       </button>
     </div>
 
-    <div style="text-align:center;margin-top:16px;font-size:11px;color:rgba(255,255,255,0.3);font-family:'Nunito',sans-serif">Solo para uso interno del equipo HÁPTICA</div>
+    <div style="text-align:center;margin-top:16px;font-size:11px;color:rgba(255,255,255,0.3);font-family:'Montserrat',sans-serif">Solo para uso interno del equipo HÁPTICA</div>
   </div>
 </div>
 
@@ -641,7 +641,7 @@ tr:hover td{background:#FAFAF8}
     <div class="page" id="page-config">
       <div class="page-header"><div class="page-title">Configuración BD</div></div>
       <div class="card" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.06em;color:var(--hdt)">Recargar pipeline desde CSV</div><div style="font-size:12px;color:var(--hmg);font-weight:600;margin-top:2px">Pipeline actualizado al 27/05/2026 · 90 oportunidades · Solo BD</div></div>
+        <div><div style="font-family:'Montserrat',sans-serif;font-size:16px;letter-spacing:0.06em;color:var(--hdt)">Recargar pipeline desde CSV</div><div style="font-size:12px;color:var(--hmg);font-weight:600;margin-top:2px">Pipeline actualizado al 27/05/2026 · 90 oportunidades · Solo BD</div></div>
         <button class="btn-danger" onclick="recargarPipeline()">🔄 Recargar desde CSV 27/05/2026</button>
       </div>
       <div class="two-col">
@@ -798,8 +798,8 @@ tr:hover td{background:#FAFAF8}
 
 <!-- Loading overlay -->
 <div id="loadingOverlay" style="position:fixed;inset:0;background:var(--hdt);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:0.08em;color:#fff">HÁPTICA</div>
-  <div style="font-size:13px;color:rgba(255,255,255,0.5);font-family:'Nunito',sans-serif;font-weight:600">Cargando pipeline comercial...</div>
+  <div style="font-family:'Montserrat',sans-serif;font-size:48px;letter-spacing:0.08em;color:#fff">HÁPTICA</div>
+  <div style="font-size:13px;color:rgba(255,255,255,0.5);font-family:'Montserrat',sans-serif;font-weight:600">Cargando pipeline comercial...</div>
   <div style="width:48px;height:48px;border:3px solid rgba(255,255,255,0.15);border-top-color:var(--ho);border-radius:50%;animation:spin 0.8s linear infinite"></div>
 </div>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
@@ -1286,7 +1286,7 @@ function renderDashboard(){
     if(kpiEl && dashPage) dashPage.insertBefore(cicloEl, kpiEl.nextSibling);
   }
   cicloEl.innerHTML = `
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.08em;color:var(--hmg);margin-bottom:8px;text-transform:uppercase">Ciclo de venta</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:13px;letter-spacing:0.08em;color:var(--hmg);margin-bottom:8px;text-transform:uppercase">Ciclo de venta</div>
     <div class="ciclo-grid">
       <div class="kpi-card"><div class="kpi-label">Ciclo promedio</div><div class="kpi-num" style="font-size:28px">${cicloPromedio!==null?cicloPromedio+'d':'—'}</div><div class="kpi-sub">Primer contacto → cierre</div></div>
       <div class="kpi-card"><div class="kpi-label">Win rate</div><div class="kpi-num" style="font-size:28px;color:${winRate>=50?'var(--hgb)':'var(--ho)'}">${winRate!==null?winRate+'%':'—'}</div><div class="kpi-sub">${vendidos.length} ganadas · ${perdidos.length} perdidas</div></div>
@@ -1701,7 +1701,7 @@ function previsualizarReporte(){
   const tipo     = document.getElementById('rTipo').value;
   const vendidos = data.filter(d=>d.status==='Vendido');
   const book     = vendidos.reduce((a,d)=>a+(d.valor||0),0);
-  let html = `<div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.05em;color:var(--hdt);margin-bottom:12px">${tipo}</div>`;
+  let html = `<div style="font-family:'Montserrat',sans-serif;font-size:16px;letter-spacing:0.05em;color:var(--hdt);margin-bottom:12px">${tipo}</div>`;
   if(tipo==='Pipeline general'){
     [{k:'Total oportunidades',v:data.length},{k:'Activas',v:data.filter(d=>!['Vendido','Perdido','Retiro'].includes(d.status)).length},{k:'Pipeline total',v:fmtM(data.reduce((a,d)=>a+(d.valor||0),0))},{k:'Ponderado',v:fmtM(data.reduce((a,d)=>a+(d.valor||0)*(d.prob||0),0))}].forEach(r=>{html+=`<div class="report-row"><span class="report-key">${r.k}</span><span class="report-val">${r.v}</span></div>`;});
   } else if(tipo==='Ventas ganadas/perdidas'){
@@ -1727,8 +1727,8 @@ const COLMAP = [['Name','name','Nombre de la oportunidad'],['Status','status','N
 function handleImport(inp){
   if(!inp.files[0]) return;
   document.getElementById('importStatus').style.display='block';
-  document.getElementById('importInfo').innerHTML=`<div style="background:var(--how);border:1px solid var(--hg);border-radius:14px;padding:16px"><div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--hdt);margin-bottom:8px">Archivo detectado</div><div style="font-size:12px;font-weight:700;margin-bottom:4px">📊 ${inp.files[0].name}</div><div style="font-size:12px;color:var(--hmg);font-weight:600">71 filas · 68 oportunidades listas para importar</div></div>`;
-  document.getElementById('importWarn').innerHTML=`<div style="background:#FFF8F0;border:1.5px solid var(--hc);border-radius:14px;padding:16px"><div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--ho);margin-bottom:8px">3 advertencias detectadas</div><div style="font-size:12px;font-weight:600;color:var(--hdg);line-height:1.8">• Fila 1: NUAM_seguimiento – Sin valor, sin responsable<br>• Fila 11: ISAPRE – Sin país, sin mes de cierre<br>• Fila 26: Alinea_administrativos – Sin valor ni fecha</div></div>`;
+  document.getElementById('importInfo').innerHTML=`<div style="background:var(--how);border:1px solid var(--hg);border-radius:14px;padding:16px"><div style="font-family:'Montserrat',sans-serif;font-size:16px;color:var(--hdt);margin-bottom:8px">Archivo detectado</div><div style="font-size:12px;font-weight:700;margin-bottom:4px">📊 ${inp.files[0].name}</div><div style="font-size:12px;color:var(--hmg);font-weight:600">71 filas · 68 oportunidades listas para importar</div></div>`;
+  document.getElementById('importWarn').innerHTML=`<div style="background:#FFF8F0;border:1.5px solid var(--hc);border-radius:14px;padding:16px"><div style="font-family:'Montserrat',sans-serif;font-size:16px;color:var(--ho);margin-bottom:8px">3 advertencias detectadas</div><div style="font-size:12px;font-weight:600;color:var(--hdg);line-height:1.8">• Fila 1: NUAM_seguimiento – Sin valor, sin responsable<br>• Fila 11: ISAPRE – Sin país, sin mes de cierre<br>• Fila 26: Alinea_administrativos – Sin valor ni fecha</div></div>`;
 }
 function confirmarImport(){ toast('✓ 68 oportunidades importadas correctamente'); document.getElementById('importStatus').style.display='none'; }
 
