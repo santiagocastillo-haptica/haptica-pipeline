@@ -502,7 +502,7 @@ tr:hover td{background:#FAFAF8}
     <!-- MI PIPELINE -->
     <div class="page" id="page-mipipeline">
       <div class="page-header"><div class="page-title">Mi pipeline</div></div>
-      <div class="card" style="margin-bottom:14px">
+      <div class="card" style="margin-bottom:14px" id="miHostCard">
         <select class="filter-select" id="miHost" onchange="renderMiPipeline()" style="border-radius:12px"><option value="Nicholle Torres">Nicholle Torres</option><option value="Angélica Flechas">Angélica Flechas</option><option value="Maria Camila Venegas">Maria Camila Venegas</option><option value="Maria Alejandra Corrales">Maria Alejandra Corrales</option><option value="Daniel Pinilla">Daniel Pinilla</option><option value="Camilo Niño">Camilo Niño</option><option value="Andrea Vega">Andrea Vega</option></select>
       </div>
       <div id="miKpis" class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px"></div>
@@ -512,7 +512,7 @@ tr:hover td{background:#FAFAF8}
     <!-- SEGUIMIENTO -->
     <div class="page" id="page-semanal">
       <div class="page-header"><div class="page-title">Seguimiento semanal</div><div class="page-sub">Semana · Abril 2026</div></div>
-      <div class="card" style="margin-bottom:14px">
+      <div class="card" style="margin-bottom:14px" id="semHostCard">
         <select class="filter-select" id="semHost" onchange="renderSemanal()" style="border-radius:12px"><option value="Nicholle Torres">Nicholle Torres</option><option value="Angélica Flechas">Angélica Flechas</option><option value="Maria Camila Venegas">Maria Camila Venegas</option><option value="Maria Alejandra Corrales">Maria Alejandra Corrales</option><option value="Daniel Pinilla">Daniel Pinilla</option><option value="Camilo Niño">Camilo Niño</option><option value="Andrea Vega">Andrea Vega</option></select>
       </div>
       <div id="semList"></div>
@@ -928,6 +928,14 @@ onAuthStateChanged(auth, (user) => {
       if(miHost) miHost.value=perfil.name;
       if(semHost) semHost.value=perfil.name;
     }
+
+    // Hosts solo ven su propio pipeline — ocultar el selector de persona
+    // BD y viewer pueden cambiar de persona libremente
+    const selectorVisible = perfil.role !== 'host';
+    const miHostCard  = document.getElementById('miHostCard');
+    const semHostCard = document.getElementById('semHostCard');
+    if(miHostCard)  miHostCard.style.display  = selectorVisible ? '' : 'none';
+    if(semHostCard) semHostCard.style.display = selectorVisible ? '' : 'none';
 
     // Restricciones viewer: solo lectura
     if(perfil.role === 'viewer'){
