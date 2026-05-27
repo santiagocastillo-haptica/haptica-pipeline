@@ -894,7 +894,8 @@ onAuthStateChanged(auth, (user) => {
     // Usuario autenticado
     const email   = user.email?.toLowerCase() || '';
     const perfil  = USER_ROLES[email] || { role:'host', name: user.displayName || email.split('@')[0] };
-    currentRole   = perfil.role;
+    currentRole        = perfil.role;
+    currentUserProfile = perfil;
 
     // Actualizar UI
     loginScreen.style.display = 'none';
@@ -967,6 +968,7 @@ onAuthStateChanged(auth, (user) => {
 const META = 4680000000, META_M = 390000000;
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 let currentRole = 'bd', sortCol = null, sortDir = 1, editIdx = null;
+let currentUserProfile = null; // perfil del usuario autenticado
 
 // Datos iniciales — pipeline actualizado al 27/05/2026
 const SEED_DATA = [
@@ -1374,7 +1376,15 @@ function renderKanban(){
 // MI PIPELINE
 // ========================
 function renderMiPipeline(){
-  const host = document.getElementById('miHost')?.value||'Nicholle Torres';
+  const card = document.getElementById('miHostCard');
+  const sel  = document.getElementById('miHost');
+  if(currentUserProfile?.role === 'host'){
+    if(sel)  sel.value          = currentUserProfile.name;
+    if(card) card.style.display = 'none';
+  } else {
+    if(card) card.style.display = '';
+  }
+  const host = sel?.value || 'Nicholle Torres';
   const myA  = data.filter(d=>d.author===host&&!['Vendido','Perdido','Retiro'].includes(d.status));
   const myV  = data.filter(d=>d.author===host&&d.status==='Vendido');
   document.getElementById('miKpis').innerHTML = `
@@ -1396,7 +1406,15 @@ function renderMiPipeline(){
 // SEMANAL
 // ========================
 function renderSemanal(){
-  const host = document.getElementById('semHost')?.value||'Nicholle Torres';
+  const card = document.getElementById('semHostCard');
+  const sel  = document.getElementById('semHost');
+  if(currentUserProfile?.role === 'host'){
+    if(sel)  sel.value          = currentUserProfile.name;
+    if(card) card.style.display = 'none';
+  } else {
+    if(card) card.style.display = '';
+  }
+  const host = sel?.value || 'Nicholle Torres';
   const myA  = data.filter(d=>d.author===host&&!['Vendido','Perdido','Retiro'].includes(d.status));
   document.getElementById('semList').innerHTML = myA.map((o,i)=>`
     <div class="wk-card" id="wk${i}">
