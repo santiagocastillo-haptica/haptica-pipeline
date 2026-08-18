@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -669,9 +669,17 @@ tr:hover td{background:#FAFAF8}
     <!-- CONFIG -->
     <div class="page" id="page-config">
       <div class="page-header"><div class="page-title">Configuración BD</div></div>
-      <div class="card" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-        <div><div style="font-family:'Montserrat',sans-serif;font-size:16px;letter-spacing:0.06em;color:var(--hdt)">Recargar desde "PIPELINE DE VENTAS.xlsx"</div><div style="font-size:12px;color:var(--hmg);font-weight:600;margin-top:2px" id="cfgSeedInfo1">—</div></div>
-        <button class="btn-danger" onclick="recargarPipeline()">🔄 Recargar pipeline y directorio</button>
+      <div class="two-col" style="margin-bottom:14px">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Actualizar pipeline</div></div>
+          <div style="font-size:12px;color:var(--hmg);font-weight:600;margin-bottom:12px;line-height:1.6" id="cfgPipelineInfo">—</div>
+          <button class="btn-secondary" style="width:100%" onclick="importarPipeline()">⬆ Agregar oportunidades nuevas</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Actualizar directorio</div></div>
+          <div style="font-size:12px;color:var(--hmg);font-weight:600;margin-bottom:12px;line-height:1.6" id="cfgDirectorioInfo">—</div>
+          <button class="btn-secondary" style="width:100%" onclick="importarDirectorio()">⬆ Agregar / enriquecer clientes</button>
+        </div>
       </div>
       <div class="two-col">
         <div class="card">
@@ -695,10 +703,16 @@ tr:hover td{background:#FAFAF8}
           <div class="report-row"><span class="report-key">Recompra (75%)</span><span class="report-val">$3.510M</span></div>
         </div>
       </div>
-      <div class="card" style="margin-top:14px">
-        <div class="card-header"><div class="card-title">Recargar pipeline</div></div>
-        <div style="font-size:12px;color:var(--hmg);font-weight:600;margin-bottom:12px;line-height:1.6" id="cfgSeedInfo2">Reemplaza todos los datos de pipeline y directorio en Firestore con lo importado desde <strong>"PIPELINE DE VENTAS.xlsx"</strong>. Solo visible para BD.</div>
-        <button class="btn-danger" onclick="recargarPipeline()">🔄 Recargar pipeline y directorio</button>
+      <div class="danger-zone" style="margin-top:14px">
+        <div class="danger-zone-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Zona de peligro · Solo BD
+        </div>
+        <div class="danger-zone-desc">Estas acciones BORRAN por completo la colección indicada en Firestore y la reemplazan desde cero con el último archivo importado. Úsalas solo si de verdad quieres empezar de nuevo — no se pueden deshacer, y no afectan a la otra colección.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn-danger" onclick="reiniciarPipeline()">🔄 Reiniciar pipeline desde cero</button>
+          <button class="btn-danger" onclick="reiniciarDirectorio()">🔄 Reiniciar directorio desde cero</button>
+        </div>
       </div>
     </div>
 
@@ -3689,23 +3703,118 @@ function confirmarImport(){ toast('✓ 68 oportunidades importadas correctamente
 function renderConfig(){
   document.getElementById('hostsList').innerHTML = hosts.map((h,i)=>`<div class="host-item"><span class="host-name">${h}</span><button class="btn-ghost btn-sm" onclick="removeHost(${i})">Eliminar</button></div>`).join('');
   document.getElementById('cfgMetaFill').style.width = Math.min(data.filter(d=>d.status==='Vendido').reduce((a,d)=>a+(d.valor||0),0)/META*100,100)+'%';
-  const info1 = document.getElementById('cfgSeedInfo1');
-  if(info1) info1.textContent = `${data.length} oportunidades · ${clientesData.length} clientes en directorio · Solo BD`;
+  const pipeInfo = document.getElementById('cfgPipelineInfo');
+  if(pipeInfo){
+    const pendientes = contarPendientesPipeline();
+    pipeInfo.textContent = pendientes>0
+      ? `${data.length} oportunidades en Firestore · ${pendientes} nuevas listas para agregar desde el último archivo importado`
+      : `${data.length} oportunidades en Firestore · sin novedades pendientes`;
+  }
+  const dirInfo = document.getElementById('cfgDirectorioInfo');
+  if(dirInfo){
+    const { nuevos } = contarPendientesDirectorio();
+    dirInfo.textContent = nuevos>0
+      ? `${clientesData.length} clientes en Firestore · ${nuevos} nuevos listos para agregar (y otros por enriquecer)`
+      : `${clientesData.length} clientes en Firestore · sin novedades pendientes`;
+  }
 }
 
-async function recargarPipeline(){
-  if(currentRole!=='bd'){ toast('Solo BD puede recargar el pipeline'); return; }
-  if(!confirm(`¿Recargar todo desde "PIPELINE DE VENTAS.xlsx"?\n\nEsto borrará los ${data.length} registros de pipeline y los ${clientesData.length} del directorio actuales en Firestore, y cargará los ${SEED_DATA.length} oportunidades y ${SEED_CLIENTES.length} clientes del Excel importado.\n\nEsta acción no se puede deshacer.`)) return;
-  toast('Borrando datos actuales…');
+// ========================
+// IMPORTAR ACTUALIZACIÓN — FUSIÓN ADITIVA (nunca borra nada)
+// Pipeline: agrega oportunidades nuevas (por nombre), no toca las que ya existen.
+// Directorio: agrega clientes nuevos y completa campos vacíos + anexa notas en los existentes.
+// ========================
+function contarPendientesPipeline(){
+  const existentes = new Set(data.map(o=>normNombre(o.name)));
+  return SEED_DATA.filter(o=>!existentes.has(normNombre(o.name))).length;
+}
+function contarPendientesDirectorio(){
+  const existentes = new Set(clientesData.map(c=>normNombre(c.nombre)));
+  return { nuevos: SEED_CLIENTES.filter(c=>!existentes.has(normNombre(c.nombre))).length, total: SEED_CLIENTES.length };
+}
+
+async function importarPipeline(){
+  if(currentRole!=='bd'){ toast('Solo BD puede importar el pipeline'); return; }
+  const existentes = new Set(data.map(o=>normNombre(o.name)));
+  const nuevas = SEED_DATA.filter(o=>!existentes.has(normNombre(o.name)));
+  if(!nuevas.length){ toast('El pipeline ya tiene todas estas cuentas — nada nuevo que agregar'); return; }
+  if(!confirm(`¿Agregar ${nuevas.length} oportunidades nuevas al pipeline?\n\nLas ${data.length} que ya existen (por nombre) no se van a modificar.`)) return;
+  toast(`Agregando ${nuevas.length} oportunidades…`);
+  try {
+    const baseTs = Date.now();
+    const CHUNK = 20;
+    for(let i=0;i<nuevas.length;i+=CHUNK){
+      const lote = nuevas.slice(i,i+CHUNK);
+      await Promise.all(lote.map((o,j)=>{
+        const newId = baseTs+i+j;
+        return setDoc(doc(db,'oportunidades',String(newId)), {...o, id:newId});
+      }));
+    }
+    toast(`✓ ${nuevas.length} oportunidades agregadas · el resto ya existía y no se tocó`);
+  } catch(e){ toast('Error: '+e.message); }
+}
+
+async function importarDirectorio(){
+  if(currentRole==='viewer'){ toast('Solo el equipo comercial puede importar el directorio'); return; }
+  toast(`Actualizando directorio…`);
+  try {
+    let nuevos=0, actualizados=0, sinCambios=0;
+    const baseTs = Date.now();
+    const CHUNK = 20;
+    for(let i=0;i<SEED_CLIENTES.length;i+=CHUNK){
+      const lote = SEED_CLIENTES.slice(i,i+CHUNK);
+      await Promise.all(lote.map(async (imp,j)=>{
+        const existente = clientesData.find(c=>normNombre(c.nombre)===normNombre(imp.nombre));
+        if(existente){
+          const patch = {};
+          ['pais','industria','contNombre','contCargo','contEmail','contTelefono'].forEach(f=>{
+            if(!existente[f] && imp[f]) patch[f]=imp[f];
+          });
+          if((!existente.etapa||existente.etapa==='Prospecto') && imp.etapa && imp.etapa!=='Prospecto') patch.etapa = imp.etapa;
+          if(imp.notas && !(existente.notas||'').includes(imp.notas.slice(0,40))){
+            patch.notas = [existente.notas, imp.notas].filter(Boolean).join('\n\n');
+          }
+          if(Object.keys(patch).length){
+            await updateDoc(doc(db,'clientes',existente._docId), patch);
+            actualizados++;
+          } else sinCambios++;
+        } else {
+          const newId = baseTs+i+j;
+          await setDoc(doc(db,'clientes',String(newId)), {...imp, id:newId});
+          nuevos++;
+        }
+      }));
+    }
+    toast(`✓ Directorio actualizado · ${nuevos} nuevos · ${actualizados} enriquecidos · ${sinCambios} sin cambios`);
+  } catch(e){ toast('Error: '+e.message); }
+}
+
+// ========================
+// ZONA DE PELIGRO — REINICIAR DESDE CERO (borra y reemplaza, solo BD)
+// ========================
+async function reiniciarPipeline(){
+  if(currentRole!=='bd'){ toast('Solo BD puede reiniciar el pipeline'); return; }
+  if(!confirm(`¿Reiniciar el PIPELINE desde cero?\n\nEsto BORRA las ${data.length} oportunidades actuales en Firestore y las reemplaza por las ${SEED_DATA.length} del último archivo importado.\n\nEl directorio de clientes NO se toca.\n\nEsta acción no se puede deshacer.`)) return;
+  toast('Borrando pipeline actual…');
   try {
     const snap = await getDocs(oppsCol);
     for(const d of snap.docs){ await deleteDoc(doc(db,'oportunidades',d.id)); }
+    toast('Cargando pipeline nuevo…');
+    for(const opp of SEED_DATA){ await setDoc(doc(db,'oportunidades',String(opp.id)),opp); }
+    toast(`✓ Pipeline reiniciado · ${SEED_DATA.length} oportunidades`);
+  } catch(e){ toast('Error: '+e.message); }
+}
+
+async function reiniciarDirectorio(){
+  if(currentRole!=='bd'){ toast('Solo BD puede reiniciar el directorio'); return; }
+  if(!confirm(`¿Reiniciar el DIRECTORIO desde cero?\n\nEsto BORRA los ${clientesData.length} clientes actuales en Firestore y los reemplaza por los ${SEED_CLIENTES.length} del último archivo importado.\n\nEl pipeline de oportunidades NO se toca.\n\nEsta acción no se puede deshacer.`)) return;
+  toast('Borrando directorio actual…');
+  try {
     const snapCli = await getDocs(clientesCol);
     for(const d of snapCli.docs){ await deleteDoc(doc(db,'clientes',d.id)); }
-    toast('Cargando pipeline y directorio actualizados…');
-    for(const opp of SEED_DATA){ await setDoc(doc(db,'oportunidades',String(opp.id)),opp); }
+    toast('Cargando directorio nuevo…');
     for(const cli of SEED_CLIENTES){ await setDoc(doc(db,'clientes',String(cli.id)),cli); }
-    toast(`✓ Recargado · ${SEED_DATA.length} oportunidades · ${SEED_CLIENTES.length} clientes`);
+    toast(`✓ Directorio reiniciado · ${SEED_CLIENTES.length} clientes`);
   } catch(e){ toast('Error: '+e.message); }
 }
 function addHost(){
@@ -4158,7 +4267,10 @@ window.confirmarImport   = confirmarImport;
 window.addHost           = addHost;
 window.removeHost        = removeHost;
 window.cerrarSesion      = cerrarSesion;
-window.recargarPipeline  = recargarPipeline;
+window.importarPipeline    = importarPipeline;
+window.importarDirectorio  = importarDirectorio;
+window.reiniciarPipeline   = reiniciarPipeline;
+window.reiniciarDirectorio = reiniciarDirectorio;
 
 // Directorio de clientes
 window.renderDirectorio         = renderDirectorio;
